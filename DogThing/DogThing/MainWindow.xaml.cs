@@ -32,7 +32,7 @@ namespace DogThing
     {
         #region Variables
         //SETUP VARIABLES//
-        private static string defaultSenderIP = "169.254.50.139";
+        private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 A, 169.254.50.139 B
         string compID = "master";
 
         private bool SenderOn = true;
@@ -98,6 +98,21 @@ namespace DogThing
             setupCanvas();
             echoSetup();
             lineSetup();
+
+            if (ReceiverOn)
+            {
+                IPHostEntry ipHostInfo = Dns.GetHostByName(Dns.GetHostName());
+                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                //Receive_Status_Text.Text = "Receiving Data at\nIP:" + ipAddress.ToString();
+                //Receive_Status_Text.Visibility = Visibility.Visible;
+            }
+            if (SenderOn)
+            {
+                SenderIP = defaultSenderIP;
+                //Share_Status_Text.Text = "Sharing Data to\nIP:" + SenderIP.ToString();
+                //Share_Status_Text.Visibility = Visibility.Visible;
+                communication_started_Sender = false;
+            }
 
             Clickeroni.Visibility = Visibility.Visible;
             System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer(System.Windows.Threading.DispatcherPriority.Render);
