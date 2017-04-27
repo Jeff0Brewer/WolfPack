@@ -31,3 +31,22 @@ C:\Users\ResearchSquad\Documents\Visual Studio 2017\Projects\DogThing\DogThing\b
 C:\Users\ResearchSquad\Documents\Visual Studio 2017\Projects\DogThing\DogThing\bin\Debug\EyeXFramework.dll
 C:\Users\ResearchSquad\Documents\Visual Studio 2017\Projects\DogThing\DogThing\bin\Debug\EyeXFramework.pdb
 C:\Users\ResearchSquad\Documents\Visual Studio 2017\Projects\DogThing\DogThing\obj\Debug\DogThing_Content.g.cs
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\Tobii.EyeX.Client.dll
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\Tobii.EyeX.Client.Net20.dll
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\DogThing.exe.config
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\DogThing.exe
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\DogThing.pdb
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\EyeXFramework.dll
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\bin\Debug\EyeXFramework.pdb
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.csprojResolveAssemblyReference.cache
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\MainWindow.g.cs
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\App.g.cs
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing_Content.g.cs
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing_MarkupCompile.cache
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing_MarkupCompile.lref
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\MainWindow.baml
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.g.resources
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.Properties.Resources.resources
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.csproj.GenerateResource.Cache
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.exe
+C:\Users\ResearchSquad\Documents\GitHub\WolfPack\DogThing\DogThing\obj\Debug\DogThing.pdb

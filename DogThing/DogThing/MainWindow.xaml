@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:DogThing"
         mc:Ignorable="d"
         Title="MainWindow" Height="1500" Width="2000" WindowState="Maximized">
+    <!--<Window.Background>
+        <SolidColorBrush Opacity="0" Color="White"/>
+    </Window.Background>-->
     <Canvas Name="canv">
         <Ellipse Name="track" Panel.ZIndex="200" Visibility="Hidden" Width="10" Height="10" Fill="Black" Opacity="1" Canvas.Left="0" Canvas.Top="0"></Ellipse>
         <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="100" Canvas.Top="100">

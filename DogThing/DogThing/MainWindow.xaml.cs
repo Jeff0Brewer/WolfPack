@@ -64,24 +64,30 @@ namespace DogThing
 
         //Echo Vis
         bool echoOn = false;
-        int numEchos = 20;
+        int numEchos = 6;
         int echoTick = 0;
-        int echoInterval = 3;
+        int echoInterval = 10;
+        Point block = new Point(0, 0);
         EchoPoints echoPoints;
         Ellipse[] echos;
+        Line[] lines;
 
         //Line Vis
         Point smoothTrack = new Point(0, 0);
         bool lineOn = false;
         Line[] echoLine;
+        Ellipse expandPoint;
         EchoPoints linePoints;
         int lineLength = 30;
+        int expandCount = 0;
+        double smoothing = .85;
 
         //Dot Vis
         bool dotOn = false;
 
         Point fastTrack = new Point(0, 0);
         Point oFastTrack = new Point(0, 0);
+        Point prevPoint = new Point(0, 0);
 
         EyeXHost eyeXHost;
         #endregion
@@ -156,45 +162,64 @@ namespace DogThing
         }
 
         private void setGaze() {
-            if (Keyboard.IsKeyDown(Key.D0)) {
+            if (Keyboard.IsKeyDown(Key.D0))
+            {
                 lineOn = false;
                 echoOn = false;
                 dotOn = false;
                 foreach (Line ln in echoLine)
                     ln.Visibility = Visibility.Hidden;
+                expandPoint.Visibility = Visibility.Hidden;
                 foreach (Ellipse el in echos)
                     el.Visibility = Visibility.Hidden;
+                foreach (Line ln in lines)
+                    ln.Visibility = Visibility.Hidden;
                 track.Visibility = Visibility.Hidden;
             }
-            else if (Keyboard.IsKeyDown(Key.D1)) {
+            else if (Keyboard.IsKeyDown(Key.D1))
+            {
                 lineOn = true;
                 echoOn = false;
                 dotOn = false;
                 foreach (Line ln in echoLine)
                     ln.Visibility = Visibility.Visible;
+                expandPoint.Visibility = Visibility.Visible;
                 foreach (Ellipse el in echos)
                     el.Visibility = Visibility.Hidden;
+                foreach (Line ln in lines)
+                    ln.Visibility = Visibility.Hidden;
                 track.Visibility = Visibility.Hidden;
             }
-            else if (Keyboard.IsKeyDown(Key.D2)) {
+            else if (Keyboard.IsKeyDown(Key.D2))
+            {
                 lineOn = false;
                 echoOn = true;
                 dotOn = false;
                 foreach (Line ln in echoLine)
                     ln.Visibility = Visibility.Hidden;
+                expandPoint.Visibility = Visibility.Hidden;
                 foreach (Ellipse el in echos)
                     el.Visibility = Visibility.Visible;
+                foreach (Line ln in lines)
+                    ln.Visibility = Visibility.Visible;
                 track.Visibility = Visibility.Hidden;
             }
-            else if (Keyboard.IsKeyDown(Key.D3)) {
+            else if (Keyboard.IsKeyDown(Key.D3))
+            {
                 lineOn = false;
                 echoOn = false;
                 dotOn = true;
                 foreach (Line ln in echoLine)
                     ln.Visibility = Visibility.Hidden;
+                expandPoint.Visibility = Visibility.Hidden;
                 foreach (Ellipse el in echos)
                     el.Visibility = Visibility.Hidden;
+                foreach (Line ln in lines)
+                    ln.Visibility = Visibility.Hidden;
                 track.Visibility = Visibility.Visible;
+            }
+            else if (Keyboard.IsKeyDown(Key.Escape)) {
+                Application.Current.Shutdown();
             }
         }
 
@@ -218,6 +243,8 @@ namespace DogThing
             }
             if (received != null)
             {
+                prevPoint.X = oFastTrack.X;
+                prevPoint.Y = oFastTrack.Y;
                 int p1, p2;
                 int ind_1 = received.IndexOf("|");
                 if (Int32.TryParse(received.Substring(0, ind_1), out p1))
@@ -245,15 +272,43 @@ namespace DogThing
                 echoLine[i].Visibility = Visibility.Hidden;
                 canv.Children.Add(echoLine[i]);
                 opacity += 1 / (double)lineLength;
-                thickness += 5 / (double)lineLength;
+                thickness += 7 / (double)lineLength;
             }
+            expandPoint = new Ellipse();
+            expandPoint.Fill = br;
+            expandPoint.Width = 0;
+            expandPoint.Height = 0;
+            expandPoint.Visibility = Visibility.Hidden;
+            canv.Children.Add(expandPoint);
             linePoints = new EchoPoints(lineLength);
         }
 
         private void lineVis() {
-            smoothTrack.X = smoothTrack.X * .5 + oFastTrack.X * .5;
-            smoothTrack.Y = smoothTrack.Y * .5 + oFastTrack.Y * .5;
+            Point temp = new Point(smoothTrack.X, smoothTrack.Y);
+            smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1-smoothing);
+            smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1-smoothing);
             linePoints.push(PointFromScreen(smoothTrack));
+            if (distance(temp, smoothTrack) < 5 && distance(smoothTrack, oFastTrack) < 200)
+            {
+                expandCount++;
+                expandPoint.Width = -20 / (1 + Math.Pow(Math.E, expandCount * .5 - 5)) + 20;
+                expandPoint.Height = expandPoint.Width;
+                Canvas.SetLeft(expandPoint, linePoints.look(lineLength - 2).X - expandPoint.Width / 2);
+                Canvas.SetTop(expandPoint, linePoints.look(lineLength - 2).Y - expandPoint.Height / 2);
+                if (expandPoint.Width > 5) {
+                    linePoints.push(PointFromScreen(smoothTrack));
+                    linePoints.push(PointFromScreen(smoothTrack));
+                    linePoints.push(PointFromScreen(smoothTrack));
+                    linePoints.push(PointFromScreen(smoothTrack));
+                    smoothing = .99;
+                }
+            }
+            else {
+                expandCount = 0;
+                expandPoint.Width = 0;
+                expandPoint.Height = 0;
+                smoothing = .90;
+            }
             for (int i = 0; i < lineLength - 2; i++)
             {
                 echoLine[i].X1 = linePoints.look(i).X;
@@ -266,7 +321,7 @@ namespace DogThing
         private void echoSetup()
         {
             echos = new Ellipse[numEchos];
-            double opacity = 0;
+            lines = new Line[numEchos - 2];
             Brush br = new SolidColorBrush(System.Windows.Media.Colors.Black);
             for (int i = 0; i < numEchos; i++)
             {
@@ -274,28 +329,57 @@ namespace DogThing
                 echos[i].Width = 10;
                 echos[i].Height = 10;
                 echos[i].Fill = br;
-                echos[i].Opacity = opacity;
+                echos[i].Opacity = 0;
                 echos[i].Name = "tr" + i.ToString();
                 echos[i].Visibility = Visibility.Hidden;
                 canv.Children.Add(echos[i]);
-                opacity += 1 / (double)numEchos;
+            }
+            for (int i = 0; i < lines.Length; i++) {
+                lines[i] = new Line();
+                lines[i].StrokeThickness = 2;
+                lines[i].Stroke = br;
+                lines[i].Opacity = 0;
+                lines[i].Visibility = Visibility.Hidden;
+                canv.Children.Add(lines[i]);
+
             }
             echoPoints = new EchoPoints(numEchos);
         }
 
         private void echoVis() {
-            if (echoTick == echoInterval)
+            if (distance(prevPoint, oFastTrack) < 10 && distance(block, oFastTrack) > 100)
+                echoTick++;
+            else
+                echoTick = 0;
+
+            if (distance(oFastTrack, block) < 50) {
+                echos[numEchos - 2].Opacity = echos[numEchos - 2].Opacity + .01;
+            }
+
+            if (echoTick > echoInterval)
             {
                 echoTick = 0;
+                block.X = oFastTrack.X;
+                block.Y = oFastTrack.Y;
                 echoPoints.push(PointFromScreen(oFastTrack));
                 for (int i = 0; i < numEchos - 1; i++) {
                     Canvas.SetLeft(echos[i], echoPoints.look(i).X);
                     Canvas.SetTop(echos[i], echoPoints.look(i).Y);
+                    echos[i].Opacity = echos[i + 1].Opacity;
                 }
+                for (int i = 0; i < lines.Length; i++) {
+                    lines[i].X1 = echoPoints.look(i).X + echos[i].Width/2;
+                    lines[i].Y1 = echoPoints.look(i).Y + echos[i].Height/2;
+                    lines[i].X2 = echoPoints.look(i + 1).X + echos[i+1].Width/2;
+                    lines[i].Y2 = echoPoints.look(i + 1).Y + echos[i+1].Height/2;
+                }
+                echos[numEchos - 2].Opacity = .2;
             }
-            else
-            {
-                echoTick++;
+            double temp;
+            for (int i = 0; i < numEchos; i++) {
+                echos[i].Opacity = ((temp = echos[i].Opacity*.995) > 0) ? temp : 0;
+                if(i < lines.Length)
+                    lines[i].Opacity = echos[i].Opacity/2 + echos[i+1].Opacity/2;
             }
         }
 
@@ -454,6 +538,10 @@ namespace DogThing
         {
             target.X = e.GetPosition(Clickeroni).X - dogger.Width/2;
             target.Y = e.GetPosition(Clickeroni).Y - dogger.Height/2;
+        }
+
+        private double distance(Point a, Point b) {
+            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
         }
 
         private double degToRad(double deg) {
