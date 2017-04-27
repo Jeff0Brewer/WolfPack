@@ -51,7 +51,7 @@ namespace DogThing
         private static String sending;
         private static String received;
 
-        Point target = new Point(100,100);
+        Point target = new Point(50,50);
         double targetAngle = 45;
         Point dog = new Point(0, 0);
         double oldx = 0;
@@ -61,6 +61,7 @@ namespace DogThing
         double wallV = 0;
         bool habove = true;
         bool vleft = false;
+        int numDeaths = 0;
 
         //Echo Vis
         bool echoOn = false;
@@ -449,10 +450,20 @@ namespace DogThing
             double dy = Canvas.GetTop(dogger);
 
             if ((oldx <= wallV && dx > wallV && !vleft) || (oldx >= wallV && dx < wallV && vleft)) {
-                Canvas.SetLeft(dogger, wallV);
+                //Canvas.SetLeft(dogger, wallV);
+                Canvas.SetLeft(dogger, 50);
+                Canvas.SetTop(dogger, 50);
+                target.X = 50;
+                target.Y = 50;
+                numDeaths++;
             }
             if ((oldy <= wallH && dy > wallH && !habove) || (oldy >= wallH && dy < wallH && habove)) {
-                Canvas.SetTop(dogger, wallH);
+                //Canvas.SetTop(dogger, wallH);
+                Canvas.SetLeft(dogger, 50);
+                Canvas.SetTop(dogger, 50);
+                target.X = 50;
+                target.Y = 50;
+                numDeaths++;
             }
         }
 

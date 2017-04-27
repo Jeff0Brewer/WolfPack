@@ -5,13 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DogThing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1500" Width="2000" WindowState="Maximized">
-    <!--<Window.Background>
-        <SolidColorBrush Opacity="0" Color="White"/>
-    </Window.Background>-->
+        Title="MainWindow" Height="1500" Width="2000" WindowState="Maximized" WindowStyle="None">
     <Canvas Name="canv">
         <Ellipse Name="track" Panel.ZIndex="200" Visibility="Hidden" Width="10" Height="10" Fill="Black" Opacity="1" Canvas.Left="0" Canvas.Top="0"></Ellipse>
-        <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="100" Canvas.Top="100">
+        <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="50" Canvas.Top="50">
             <Rectangle.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -26,15 +23,18 @@
         <Rectangle Name="Clickeroni" Visibility="Hidden" Panel.ZIndex="100" Width="2000" Height="2000" Fill="Black" Opacity="0" PreviewMouseDown="Clickeroni_PreviewMouseDown"/>
         <Line Name="wV" Visibility="Hidden" Y1="0" Y2="2000" X1="0" X2="0" StrokeThickness="1" Stroke="Red"></Line>
         <Line Name="wH" Visibility="Hidden" X1="0" X2="2000" Y1="0" Y2="0" StrokeThickness="1" Stroke="Red"></Line>
-        <Rectangle Name="x1" Width="100" Opacity="1" Height="1118" Fill="Blue" Canvas.Left="422" Canvas.Top="354"></Rectangle>
-        <Rectangle Name="xa2" Width="100" Height="846" Fill="Gray" Canvas.Left="184" Canvas.Top="0"/>
-        <Rectangle Name="xa3" Width="100" Height="424" Fill="Gray" Canvas.Left="422" Canvas.Top="-168"/>
-        <Rectangle Name="x4" Width="643" Height="100" Fill="Blue" Canvas.Left="522" Canvas.Top="156"/>
-        <Rectangle Name="xa5" Width="100" Opacity="1" Height="437" Fill="Gray" Canvas.Left="654" Canvas.Top="409"/>
-        <Rectangle Name="x6" Width="100" Opacity="1" Height="156" Fill="Blue" Canvas.Left="654" Canvas.Top="253"/>
-        <Rectangle Name="xa7" Width="100" Opacity="1" Height="478" Fill="Gray" Canvas.Left="873" Canvas.Top="253"/>
-        <Rectangle Name="xa9" Width="192" Opacity="1" Height="100" Fill="Gray" Canvas.Left="1128" Canvas.Top="631"/>
-        <Rectangle Name="x10" Width="193" Opacity="1" Height="100" Fill="Blue" Canvas.Left="972" Canvas.Top="631"/>
+        <Rectangle Name="xb1" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="124" Canvas.Left="-2"/>
+        <Rectangle Name="xa2" Width="70" Opacity="1" Height="461" Fill="Gray" Canvas.Left="455" Canvas.Top="-3"/>
+        <Rectangle x:Name="xb3" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="124" Canvas.Left="455"/>
+        <Rectangle x:Name="xb4" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="282" Canvas.Left="173"/>
+        <Rectangle x:Name="xa5" Width="72" Opacity="1" Height="282" Fill="Gray" Canvas.Left="173" Canvas.Top="282"/>
+        <Rectangle x:Name="xa6" Width="980" Opacity="1" Height="70" Fill="Gray" Canvas.Top="634" Canvas.Left="-2"/>
+        <Rectangle x:Name="xa7" Width="70" Opacity="1" Height="785" Fill="Gray" Canvas.Left="908" Canvas.Top="124"/>
+        <Rectangle x:Name="xb8" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="282" Canvas.Left="908"/>
+        <Rectangle x:Name="xa9" Width="585" Opacity="1" Height="70" Fill="Gray" Canvas.Top="466" Canvas.Left="1087"/>
+        <Rectangle x:Name="xb10" Width="585" Opacity="1" Height="70" Fill="Gray" Canvas.Top="634" Canvas.Left="1087"/>
+        <Rectangle x:Name="xb11" Width="72" Opacity="1" Height="275" Fill="Gray" Canvas.Left="173" Canvas.Top="634"/>
+        <Rectangle x:Name="xb12" Width="612" Opacity="1" Height="70" Fill="Gray" Canvas.Top="839" Canvas.Left="173"/>
 
     </Canvas>
 </Window>
