@@ -40,6 +40,8 @@
             <Rectangle x:Name="xb11" Width="72" Opacity="1" Height="275" Fill="Gray" Canvas.Left="173" Canvas.Top="634"/>
             <Rectangle x:Name="xb12" Width="612" Opacity="1" Height="70" Fill="Gray" Canvas.Top="839" Canvas.Left="173"/>
             <Rectangle Name="goal" Fill="YellowGreen" Width="440" Height="340" Canvas.Left="1356" Canvas.Top="850"></Rectangle>
+            <TextBlock Name="ElapsedTime" Foreground="White" Canvas.Right="20" Canvas.Bottom="20" HorizontalAlignment="Left" FontSize="80">00:00</TextBlock>
+
         </Canvas>
     </Viewbox>
 </Window>

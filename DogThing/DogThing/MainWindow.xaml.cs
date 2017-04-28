@@ -33,7 +33,7 @@ namespace DogThing
         #region Variables
         //SETUP VARIABLES//
         private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 A, 169.254.50.139 B
-        string compID = "master"; //Set to a, b, or master
+        string compID = "b"; //Set to a, b, or master
         string condition = "fill";
         string testNumber = "0";
 
@@ -83,10 +83,14 @@ namespace DogThing
         EchoPoints linePoints;
         int lineLength = 30;
         int expandCount = 0;
-        double smoothing = .90;
+        double smoothing = .85;
         int lineend = 0;
         int linestart = 0;
 
+        //Elapsed Time
+        int startTime = 0;
+        int elapsedTime = 0;
+        
 
         //Dot Vis
         bool dotOn = false;
@@ -99,7 +103,7 @@ namespace DogThing
 
         //Logging
         StringBuilder csv = new StringBuilder();
-        String pathStart = "C:/Users/ResearchSquad/Documents/DogLog/data";
+        String pathStart = "C:/Users/Master/Documents/DogLog/data";
         String filePath;
         DateTime uni = new DateTime(1970, 1, 1);
         string currGaze = "none";
@@ -117,6 +121,7 @@ namespace DogThing
             }
             csv.AppendLine("X,Y,CompID,Time,Unix Time,Condition,Failures,Gaze On");
 
+            startTime = Convert.ToInt32(DateTimeOffset.Now.ToUnixTimeSeconds());
             eyeXHost = new EyeXHost();
             eyeXHost.Start();
             var gazeData = eyeXHost.CreateGazePointDataStream(GazePointDataMode.LightlyFiltered);
@@ -185,12 +190,18 @@ namespace DogThing
             //target.Y = Canvas.GetTop(track) - track.Height / 2;
 
             logData();
+            updateTime();
         }
 
         private void logData() {
             String newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}",fastTrack.X,fastTrack.Y,compID,DateTime.Now.TimeOfDay,
                                             DateTimeOffset.Now.ToUnixTimeMilliseconds(),condition,numDeaths,currGaze);
             csv.AppendLine(newLine);
+        }
+        private void updateTime()
+        {
+            elapsedTime = Convert.ToInt32(DateTimeOffset.Now.ToUnixTimeSeconds()) - startTime;
+            ElapsedTime.Text = (Convert.ToInt32(elapsedTime) / 60).ToString("00") + ":" + (Convert.ToInt32(elapsedTime) % 60).ToString("00");
         }
 
         private void setGaze() {
@@ -263,7 +274,7 @@ namespace DogThing
 
         private void sendRecieve() {
             sending = ((int)fastTrack.X).ToString() + "|" + ((int)fastTrack.Y).ToString();
-            received = sending;
+            //received = sending;
             //If user pressed Receiver or Cursor button but communication haven't started yet or has terminated, start a thread on tryCommunicateReceiver()
             if (ReceiverOn && communication_started_Receiver == false)
             {
@@ -327,7 +338,7 @@ namespace DogThing
             smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1 - smoothing);
             smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1 - smoothing);
             linePush(PointFromScreen(smoothTrack));
-            if (distance(temp, smoothTrack) < 5 && distance(smoothTrack, oFastTrack) < 200)
+            if (distance(temp, smoothTrack) < 1.3 && distance(smoothTrack, oFastTrack) < 200)
             {
                 expandCount++;
                 expandPoint.Width = -20 / (1 + Math.Pow(Math.E, expandCount * .5 - 5)) + 20;
@@ -341,7 +352,7 @@ namespace DogThing
                     linePush(temp);
                     linePush(temp);
                     linePush(temp);
-                    smoothing = .99;
+                    smoothing = .97;
                 }
             }
             else if(expandCount != 0)
@@ -349,7 +360,7 @@ namespace DogThing
                 expandCount = 0;
                 expandPoint.Width = 0;
                 expandPoint.Height = 0;
-                smoothing = .90;
+                smoothing = .85;
             }
             double thickness = .1;
             double opacity = 0;
@@ -552,6 +563,7 @@ namespace DogThing
                 target.X = 50;
                 target.Y = 50;
                 numDeaths++;
+                startTime = startTime - 15;
             }
             if ((oldy <= wallH && dy > wallH && !habove) || (oldy >= wallH && dy < wallH && habove)) {
                 //Canvas.SetTop(dogger, wallH);
@@ -560,6 +572,7 @@ namespace DogThing
                 target.X = 50;
                 target.Y = 50;
                 numDeaths++;
+                startTime = startTime - 15;
             }
         }
 
