@@ -28,7 +28,7 @@
             <Line Name="wV" Visibility="Hidden" Y1="0" Y2="2000" X1="0" X2="0" StrokeThickness="1" Stroke="Red"></Line>
             <Line Name="wH" Visibility="Hidden" X1="0" X2="2000" Y1="0" Y2="0" StrokeThickness="1" Stroke="Red"></Line>
             <Rectangle Name="xb1" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="124" Canvas.Left="-2"/>
-            <Rectangle Name="xa2" Width="70" Opacity="1" Height="461" Fill="Gray" Canvas.Left="455" Canvas.Top="-3"/>
+            <Rectangle Name="xa2" Width="70" Opacity="1" Height="646" Fill="Gray" Canvas.Left="455" Canvas.Top="-188"/>
             <Rectangle x:Name="xb3" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="124" Canvas.Left="455"/>
             <Rectangle x:Name="xb4" Width="352" Opacity="1" Height="70" Fill="Gray" Canvas.Top="282" Canvas.Left="173"/>
             <Rectangle x:Name="xa5" Width="72" Opacity="1" Height="282" Fill="Gray" Canvas.Left="173" Canvas.Top="282"/>
@@ -39,6 +39,7 @@
             <Rectangle x:Name="xb10" Width="585" Opacity="1" Height="70" Fill="Gray" Canvas.Top="634" Canvas.Left="1087"/>
             <Rectangle x:Name="xb11" Width="72" Opacity="1" Height="275" Fill="Gray" Canvas.Left="173" Canvas.Top="634"/>
             <Rectangle x:Name="xb12" Width="612" Opacity="1" Height="70" Fill="Gray" Canvas.Top="839" Canvas.Left="173"/>
+            <Rectangle Name="goal" Fill="YellowGreen" Width="440" Height="340" Canvas.Left="1356" Canvas.Top="850"></Rectangle>
         </Canvas>
     </Viewbox>
 </Window>

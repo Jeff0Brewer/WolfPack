@@ -83,8 +83,7 @@ namespace DogThing
         EchoPoints linePoints;
         int lineLength = 30;
         int expandCount = 0;
-        double smoothing = .85;
-        //performance testing
+        double smoothing = .90;
         int lineend = 0;
         int linestart = 0;
 
@@ -181,6 +180,9 @@ namespace DogThing
                 echoVis();
             if(dotOn)
                 trackDot();
+
+            //target.X = Canvas.GetLeft(track) - track.Width / 2;
+            //target.Y = Canvas.GetTop(track) - track.Height / 2;
 
             logData();
         }
@@ -505,8 +507,8 @@ namespace DogThing
 
         private void trackDot() {
             Point fromScreen = PointFromScreen(oFastTrack);
-            Canvas.SetLeft(track, Canvas.GetLeft(track)*.5 + .5*fromScreen.X);
-            Canvas.SetTop(track, Canvas.GetTop(track)*.5 + .5*fromScreen.Y);
+            Canvas.SetLeft(track, Canvas.GetLeft(track)*.75 + .25*fromScreen.X);
+            Canvas.SetTop(track, Canvas.GetTop(track)*.75 + .25*fromScreen.Y);
         }
 
         private void movement()
