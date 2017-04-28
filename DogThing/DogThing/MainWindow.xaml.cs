@@ -656,8 +656,8 @@ namespace DogThing
 
         private void Clickeroni_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            target.X = e.GetPosition(Clickeroni).X - dogger.Width/2;
-            target.Y = e.GetPosition(Clickeroni).Y - dogger.Height/2;
+            target.X = e.GetPosition(topLeft).X - dogger.Width / 2;
+            target.Y = e.GetPosition(topLeft).Y - dogger.Height / 2;
         }
 
         private double distance(Point a, Point b) {
