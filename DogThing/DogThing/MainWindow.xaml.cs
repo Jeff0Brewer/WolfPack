@@ -33,7 +33,9 @@ namespace DogThing
         #region Variables
         //SETUP VARIABLES//
         private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 A, 169.254.50.139 B
-        string compID = "master";
+        string compID = "master"; //Set to a, b, or master
+        string condition = "fill";
+        string testNumber = "0";
 
         private bool SenderOn = true;
         private bool ReceiverOn = true;
@@ -82,6 +84,10 @@ namespace DogThing
         int lineLength = 30;
         int expandCount = 0;
         double smoothing = .85;
+        //performance testing
+        int lineend = 0;
+        int linestart = 0;
+
 
         //Dot Vis
         bool dotOn = false;
@@ -91,11 +97,26 @@ namespace DogThing
         Point prevPoint = new Point(0, 0);
 
         EyeXHost eyeXHost;
+
+        //Logging
+        StringBuilder csv = new StringBuilder();
+        String pathStart = "C:/Users/ResearchSquad/Documents/DogLog/data";
+        String filePath;
+        DateTime uni = new DateTime(1970, 1, 1);
+        string currGaze = "none";
+        int testoffset = 0;
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
+
+            filePath = pathStart + testNumber + ".csv";
+            while (File.Exists(filePath)) {
+                testoffset++;
+                filePath = pathStart + testNumber + "-" + testoffset.ToString() +".csv";
+            }
+            csv.AppendLine("X,Y,CompID,Time,Unix Time,Condition,Failures,Gaze On");
 
             eyeXHost = new EyeXHost();
             eyeXHost.Start();
@@ -160,11 +181,20 @@ namespace DogThing
                 echoVis();
             if(dotOn)
                 trackDot();
+
+            logData();
+        }
+
+        private void logData() {
+            String newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}",fastTrack.X,fastTrack.Y,compID,DateTime.Now.TimeOfDay,
+                                            DateTimeOffset.Now.ToUnixTimeMilliseconds(),condition,numDeaths,currGaze);
+            csv.AppendLine(newLine);
         }
 
         private void setGaze() {
             if (Keyboard.IsKeyDown(Key.D0))
             {
+                currGaze = "none";
                 lineOn = false;
                 echoOn = false;
                 dotOn = false;
@@ -179,6 +209,7 @@ namespace DogThing
             }
             else if (Keyboard.IsKeyDown(Key.D1))
             {
+                currGaze = "line";
                 lineOn = true;
                 echoOn = false;
                 dotOn = false;
@@ -193,6 +224,7 @@ namespace DogThing
             }
             else if (Keyboard.IsKeyDown(Key.D2))
             {
+                currGaze = "echo";
                 lineOn = false;
                 echoOn = true;
                 dotOn = false;
@@ -207,6 +239,7 @@ namespace DogThing
             }
             else if (Keyboard.IsKeyDown(Key.D3))
             {
+                currGaze = "dot";
                 lineOn = false;
                 echoOn = false;
                 dotOn = true;
@@ -220,6 +253,8 @@ namespace DogThing
                 track.Visibility = Visibility.Visible;
             }
             else if (Keyboard.IsKeyDown(Key.Escape)) {
+                File.WriteAllText(filePath,csv.ToString());
+                eyeXHost.Dispose();
                 Application.Current.Shutdown();
             }
         }
@@ -284,40 +319,99 @@ namespace DogThing
             linePoints = new EchoPoints(lineLength);
         }
 
-        private void lineVis() {
+        private void lineVis()
+        {
             Point temp = new Point(smoothTrack.X, smoothTrack.Y);
-            smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1-smoothing);
-            smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1-smoothing);
-            linePoints.push(PointFromScreen(smoothTrack));
+            smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1 - smoothing);
+            smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1 - smoothing);
+            linePush(PointFromScreen(smoothTrack));
             if (distance(temp, smoothTrack) < 5 && distance(smoothTrack, oFastTrack) < 200)
             {
                 expandCount++;
                 expandPoint.Width = -20 / (1 + Math.Pow(Math.E, expandCount * .5 - 5)) + 20;
                 expandPoint.Height = expandPoint.Width;
-                Canvas.SetLeft(expandPoint, linePoints.look(lineLength - 2).X - expandPoint.Width / 2);
-                Canvas.SetTop(expandPoint, linePoints.look(lineLength - 2).Y - expandPoint.Height / 2);
-                if (expandPoint.Width > 5) {
-                    linePoints.push(PointFromScreen(smoothTrack));
-                    linePoints.push(PointFromScreen(smoothTrack));
-                    linePoints.push(PointFromScreen(smoothTrack));
-                    linePoints.push(PointFromScreen(smoothTrack));
+                Canvas.SetLeft(expandPoint, echoLine[linestart].X2 - expandPoint.Width / 2);
+                Canvas.SetTop(expandPoint, echoLine[linestart].Y2 - expandPoint.Height / 2);
+                if (expandPoint.Width > 5)
+                {
+                    temp = PointFromScreen(smoothTrack);
+                    linePush(temp);
+                    linePush(temp);
+                    linePush(temp);
+                    linePush(temp);
                     smoothing = .99;
                 }
             }
-            else {
+            else if(expandCount != 0)
+            {
                 expandCount = 0;
                 expandPoint.Width = 0;
                 expandPoint.Height = 0;
                 smoothing = .90;
             }
-            for (int i = 0; i < lineLength - 2; i++)
+            double thickness = .1;
+            double opacity = 0;
+            double opacityInc = 1 / (double)lineLength;
+            double thicknessInc = 7 / (double)lineLength;
+            int end = lineend + echoLine.Length;
+            for (int i = lineend; i < end; i++)
             {
-                echoLine[i].X1 = linePoints.look(i).X;
-                echoLine[i].Y1 = linePoints.look(i).Y;
-                echoLine[i].X2 = linePoints.look(i + 1).X;
-                echoLine[i].Y2 = linePoints.look(i + 1).Y;
+                int ind = i % echoLine.Length;
+                echoLine[ind].StrokeThickness = thickness;
+                echoLine[ind].Opacity = opacity;
+                thickness += thicknessInc;
+                opacity += opacityInc;
             }
         }
+
+        private void linePush(Point p) {
+            echoLine[lineend].X1 = echoLine[linestart].X2;
+            echoLine[lineend].Y1 = echoLine[linestart].Y2;
+            echoLine[lineend].X2 = p.X;
+            echoLine[lineend].Y2 = p.Y;
+            linestart = (linestart + 1) % echoLine.Length;
+            if (linestart == lineend)
+                lineend = (lineend + 1) % echoLine.Length;
+        }
+
+        ////OLD SLOW lineVis////
+        //private void lineVis()
+        //{
+        //    Point temp = new Point(smoothTrack.X, smoothTrack.Y);
+        //    smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1 - smoothing);
+        //    smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1 - smoothing);
+        //    linePoints.push(PointFromScreen(smoothTrack));
+        //    if (distance(temp, smoothTrack) < 5 && distance(smoothTrack, oFastTrack) < 200)
+        //    {
+        //        expandCount++;
+        //        expandPoint.Width = -20 / (1 + Math.Pow(Math.E, expandCount * .5 - 5)) + 20;
+        //        expandPoint.Height = expandPoint.Width;
+        //        Canvas.SetLeft(expandPoint, linePoints.look(lineLength - 2).X - expandPoint.Width / 2);
+        //        Canvas.SetTop(expandPoint, linePoints.look(lineLength - 2).Y - expandPoint.Height / 2);
+        //        if (expandPoint.Width > 5)
+        //        {
+        //            linePoints.push(PointFromScreen(smoothTrack));
+        //            linePoints.push(PointFromScreen(smoothTrack));
+        //            linePoints.push(PointFromScreen(smoothTrack));
+        //            linePoints.push(PointFromScreen(smoothTrack));
+        //            smoothing = .99;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        expandCount = 0;
+        //        expandPoint.Width = 0;
+        //        expandPoint.Height = 0;
+        //        smoothing = .90;
+        //    }
+        //    for (int i = 0; i < lineLength - 2; i++)
+        //    {
+        //        echoLine[i].X1 = linePoints.look(i).X;
+        //        echoLine[i].Y1 = linePoints.look(i).Y;
+        //        echoLine[i].X2 = linePoints.look(i + 1).X;
+        //        echoLine[i].Y2 = linePoints.look(i + 1).Y;
+        //    }
+        //}
 
         private void echoSetup()
         {

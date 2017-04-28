@@ -10,6 +10,7 @@
         Title="MainWindow" WindowState="Maximized"  WindowStyle="None">
     <Viewbox>
         <Canvas Name="canv" Background="LightCyan" Width="1672" Height="1050">
+            <TextBlock Name="testing" Text="" Canvas.Right="0" Canvas.Top="0" FontSize="32"></TextBlock>
             <Ellipse Name="track" Panel.ZIndex="200" Visibility="Hidden" Width="10" Height="10" Fill="Black" Opacity="1" Canvas.Left="0" Canvas.Top="0"></Ellipse>
             <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="50" Canvas.Top="50">
                 <Rectangle.RenderTransform>
