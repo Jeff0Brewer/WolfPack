@@ -8,8 +8,8 @@
         Height="1050" 
         Width="1672"
         Title="MainWindow" WindowState="Maximized"  WindowStyle="None">
-    <Viewbox>
-        <Canvas Name="canv" Background="LightCyan" Width="1672" Height="1050">
+    <Viewbox Name="vbox">
+        <Canvas Name="canv" Background="LightCyan" Width="1672" Height="1050" Loaded="canv_Loaded">
             <TextBlock Name="testing" Text="" Canvas.Right="0" Canvas.Top="0" FontSize="32"></TextBlock>
             <Ellipse Name="track" Panel.ZIndex="200" Visibility="Hidden" Width="10" Height="10" Fill="Black" Opacity="1" Canvas.Left="0" Canvas.Top="0"></Ellipse>
             <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="50" Canvas.Top="50">
@@ -24,7 +24,7 @@
             </Rectangle>
             <TextBlock Name="tAngle" Text=""></TextBlock>
             <TextBlock Name="dAngle" Text="" Canvas.Top="16"></TextBlock>
-            <Rectangle Name="Clickeroni" Visibility="Hidden" Panel.ZIndex="100" Width="2958" Height="2086" Fill="Black" Opacity="0" PreviewMouseDown="Clickeroni_PreviewMouseDown" Canvas.Left="-689" Canvas.Top="-488"/>
+            <Rectangle Name="Clickeroni" Visibility="Hidden" Panel.ZIndex="100" Width="1672" Height="1050" Fill="Black" Opacity="0" PreviewMouseDown="Clickeroni_PreviewMouseDown"/>
             <Rectangle Name="topLeft" Visibility="Hidden" Width="100" Height="100"></Rectangle>
             <Line Name="wV" Visibility="Hidden" Y1="0" Y2="2000" X1="0" X2="0" StrokeThickness="1" Stroke="Red"></Line>
             <Line Name="wH" Visibility="Hidden" X1="0" X2="2000" Y1="0" Y2="0" StrokeThickness="1" Stroke="Red"></Line>

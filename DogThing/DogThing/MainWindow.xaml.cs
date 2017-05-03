@@ -108,11 +108,17 @@ namespace DogThing
         DateTime uni = new DateTime(1970, 1, 1);
         string currGaze = "none";
         int testoffset = 0;
+
+        //Screen scaling
+        double xadjust, yadjust;
+        double xoffset, yoffset;
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
+
+            
 
             filePath = pathStart + testNumber + ".csv";
             while (File.Exists(filePath)) {
@@ -152,7 +158,27 @@ namespace DogThing
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatcherTimer.Start();
         }
-        
+
+        private void canv_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Clickeroni.Width / Clickeroni.Height < this.Width / this.Height)
+            {
+                double tx = ((this.Width / this.Height) * Clickeroni.Height);
+                xadjust = tx / this.Width;
+                xoffset = -((this.Width / this.Height) - (Clickeroni.Width / Clickeroni.Height)) * Clickeroni.Width/4;
+                yoffset = 0;
+                yadjust = Clickeroni.Height / this.Height;
+            }
+            else
+            {
+                double ty = (this.Height / this.Width) * Clickeroni.Width;
+                yadjust = ty / this.Height;
+                yoffset = -((this.Height / this.Width) - (Clickeroni.Height / Clickeroni.Width)) * Clickeroni.Height / 4;
+                xoffset = 0;
+                xadjust = Clickeroni.Width / this.Width;
+            }
+        }
+
         private void setupCanvas()
         {
             Rectangle handle;
@@ -181,10 +207,10 @@ namespace DogThing
             setGaze();
             if(lineOn)
                 lineVis();
-            if(echoOn)
-                echoVis();
-            if(dotOn)
-                trackDot();
+            //if(echoOn)
+            //    echoVis();
+            //if(dotOn)
+            //    trackDot();
 
             //target.X = Canvas.GetLeft(track) - track.Width / 2;
             //target.Y = Canvas.GetTop(track) - track.Height / 2;
@@ -198,6 +224,7 @@ namespace DogThing
                                             DateTimeOffset.Now.ToUnixTimeMilliseconds(),condition,numDeaths,currGaze);
             csv.AppendLine(newLine);
         }
+
         private void updateTime()
         {
             elapsedTime = Convert.ToInt32(DateTimeOffset.Now.ToUnixTimeSeconds()) - startTime;
@@ -274,7 +301,7 @@ namespace DogThing
 
         private void sendRecieve() {
             sending = ((int)fastTrack.X).ToString() + "|" + ((int)fastTrack.Y).ToString();
-            //received = sending;
+            received = sending;
             //If user pressed Receiver or Cursor button but communication haven't started yet or has terminated, start a thread on tryCommunicateReceiver()
             if (ReceiverOn && communication_started_Receiver == false)
             {
@@ -337,7 +364,10 @@ namespace DogThing
             Point temp = new Point(smoothTrack.X, smoothTrack.Y);
             smoothTrack.X = smoothTrack.X * smoothing + oFastTrack.X * (1 - smoothing);
             smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1 - smoothing);
-            linePush(PointFromScreen(smoothTrack));
+            Point adjust = PointFromScreen(smoothTrack);
+            adjust.X = adjust.X * xadjust + xoffset;
+            adjust.Y = adjust.Y * yadjust;
+            linePush(adjust);
             if (distance(temp, smoothTrack) < 1.3 && distance(smoothTrack, oFastTrack) < 200)
             {
                 expandCount++;
@@ -347,11 +377,10 @@ namespace DogThing
                 Canvas.SetTop(expandPoint, echoLine[linestart].Y2 - expandPoint.Height / 2);
                 if (expandPoint.Width > 5)
                 {
-                    temp = PointFromScreen(smoothTrack);
-                    linePush(temp);
-                    linePush(temp);
-                    linePush(temp);
-                    linePush(temp);
+                    linePush(adjust);
+                    linePush(adjust);
+                    linePush(adjust);
+                    linePush(adjust);
                     smoothing = .97;
                 }
             }
@@ -691,6 +720,7 @@ namespace DogThing
 
             //AsynchronousSocketListener.StartListening();
         }
+
         public class StateObject
         {
             // Client  socket.
