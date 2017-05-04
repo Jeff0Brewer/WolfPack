@@ -184,7 +184,7 @@ namespace DogThing
             Rectangle handle;
             foreach (UIElement child in canv.Children) {
                 if (child.GetType().Equals(dogger.GetType()) && (handle = child as Rectangle).Name.Substring(0, 1).Equals("x")) {
-                    if (!handle.Name.Substring(1, 1).Equals(compID) && !compID.Equals("master"))
+                    if (!handle.Name.Substring(1, 1).Equals(compID) && !handle.Name.Substring(1, 1).Equals("c") && !compID.Equals("master"))
                         handle.Visibility = Visibility.Hidden;
                 }
             }
