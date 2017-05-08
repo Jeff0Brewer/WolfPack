@@ -33,7 +33,7 @@ namespace DogThing
         #region Variables
         //SETUP VARIABLES//
         private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 A, 169.254.50.139 B
-        string compID = "b"; //Set to a, b, or master
+        string compID = "master"; //Set to a, b, or master
         string condition = "fill";
         string testNumber = "0";
 
@@ -103,7 +103,7 @@ namespace DogThing
 
         //Logging
         StringBuilder csv = new StringBuilder();
-        String pathStart = "C:/Users/Master/Documents/DogLog/data";
+        String pathStart = "C:/Users/ResearchSquad/Documents/DogLog/data";
         String filePath;
         DateTime uni = new DateTime(1970, 1, 1);
         string currGaze = "none";
@@ -112,6 +112,9 @@ namespace DogThing
         //Screen scaling
         double xadjust, yadjust;
         double xoffset, yoffset;
+
+        //Performance
+        bool wallswitch = true;
         #endregion
 
         public MainWindow()
@@ -199,8 +202,9 @@ namespace DogThing
         {
             movement();
             collision();
-            wallSwitching();
-            //debugView();
+            if (wallswitch)
+                wallSwitching();
+            wallswitch = !wallswitch;
 
             sendRecieve();
 
@@ -366,9 +370,9 @@ namespace DogThing
             smoothTrack.Y = smoothTrack.Y * smoothing + oFastTrack.Y * (1 - smoothing);
             Point adjust = PointFromScreen(smoothTrack);
             adjust.X = adjust.X * xadjust + xoffset;
-            adjust.Y = adjust.Y * yadjust;
+            adjust.Y = adjust.Y * yadjust + yoffset;
             linePush(adjust);
-            if (distance(temp, smoothTrack) < 1.3 && distance(smoothTrack, oFastTrack) < 200)
+            if (distance(temp, smoothTrack) < 1.5 && distance(smoothTrack, oFastTrack) < 200)
             {
                 expandCount++;
                 expandPoint.Width = -20 / (1 + Math.Pow(Math.E, expandCount * .5 - 5)) + 20;
@@ -392,7 +396,7 @@ namespace DogThing
                 smoothing = .85;
             }
             double thickness = .1;
-            double opacity = 0;
+            double opacity = .2;
             double opacityInc = 1 / (double)lineLength;
             double thicknessInc = 7 / (double)lineLength;
             int end = lineend + echoLine.Length;
@@ -567,25 +571,25 @@ namespace DogThing
                 angle = (angle * .75 + targetAngle * .25) % 360;
             else if (angle > 180)
                 angle = (angle * .75 + (targetAngle + 360) * .25) % 360;
-            else if (angle < 180)
+            else
                 angle = (angle * .75 + (targetAngle - 360) * .25) % 360;
             if (angle < 0)
                 angle += 360;
-            double diff;
-            if (Math.Abs(diff = dog.X - target.X) > 3 || Math.Abs(diff = dog.Y - target.Y) > 3)
+            if (Math.Abs(dog.X - target.X) > 3 || Math.Abs(dog.Y - target.Y) > 3)
             {
-                Canvas.SetLeft(dogger, dog.X += 3 * Math.Cos(degToRad(angle - 90)));
-                Canvas.SetTop(dogger, dog.Y += 3 * Math.Sin(degToRad(angle - 90)));
+                double rad = degToRad(angle - 90);
+                Canvas.SetLeft(dogger, dog.X += 3 * Math.Cos(rad));
+                Canvas.SetTop(dogger, dog.Y += 3 * Math.Sin(rad));
             }
             dogger.RenderTransform = new RotateTransform(angle);
         }
 
         private void collision()
         {
-            double dx = Canvas.GetLeft(dogger);
-            double dy = Canvas.GetTop(dogger);
+            dog.X = Canvas.GetLeft(dogger);
+            dog.Y = Canvas.GetTop(dogger);
 
-            if ((oldx <= wallV && dx > wallV && !vleft) || (oldx >= wallV && dx < wallV && vleft)) {
+            if ((oldx <= wallV && dog.X > wallV && !vleft) || (oldx >= wallV && dog.X < wallV && vleft)) {
                 //Canvas.SetLeft(dogger, wallV);
                 Canvas.SetLeft(dogger, 50);
                 Canvas.SetTop(dogger, 50);
@@ -594,7 +598,7 @@ namespace DogThing
                 numDeaths++;
                 startTime = startTime - 15;
             }
-            if ((oldy <= wallH && dy > wallH && !habove) || (oldy >= wallH && dy < wallH && habove)) {
+            else if ((oldy <= wallH && dog.Y > wallH && !habove) || (oldy >= wallH && dog.Y < wallH && habove)) {
                 //Canvas.SetTop(dogger, wallH);
                 Canvas.SetLeft(dogger, 50);
                 Canvas.SetTop(dogger, 50);
@@ -606,11 +610,10 @@ namespace DogThing
         }
 
         private void wallSwitching() {
-
             Rectangle rect;
             double temp;
-            double dy = Canvas.GetTop(dogger);
-            double dx = Canvas.GetLeft(dogger);
+            dog.Y = Canvas.GetTop(dogger);
+            dog.X = Canvas.GetLeft(dogger);
             double miny = 2000;
             double minx = 2000;
             bool hset = false;
@@ -619,47 +622,47 @@ namespace DogThing
             {
                 if (child.GetType().Equals(dogger.GetType()) && (rect = child as Rectangle).Name.Substring(0, 1).Equals("x")) {
                     //Setting wallH
-                    if (dx > Canvas.GetLeft(rect) - dogger.Width && dx < Canvas.GetLeft(rect) + rect.Width) {
+                    if (dog.X > Canvas.GetLeft(rect) - dogger.Width && dog.X < Canvas.GetLeft(rect) + rect.Width) {
                         if (angle > 90 && angle < 270)
                         {
-                            if ((temp = (Canvas.GetTop(rect) - dogger.Height)) - dy >= 0 && temp - dy < miny)
+                            if ((temp = (Canvas.GetTop(rect) - dogger.Height + dogger.Width)) - dog.Y >= 0 && temp - dog.Y < miny)
                             {
                                 wallH = temp;
                                 habove = false;
-                                miny = temp - dy;
+                                miny = temp - dog.Y;
                                 hset = true;
                             }
                         }
                         else {
-                            if (dy - (temp = (Canvas.GetTop(rect)) + rect.Height) >= 0 && dy - temp < miny)
+                            if (dog.Y - (temp = (Canvas.GetTop(rect)) + rect.Height - dogger.Width) >= 0 && dog.Y - temp < miny)
                             {
                                 wallH = temp;
                                 habove = true;
-                                miny = dy - temp;
+                                miny = dog.Y - temp;
                                 hset = true;
                             }
                         }
                     }
                     //Setting wallV
-                    if (dy > Canvas.GetTop(rect) - dogger.Height && dy < Canvas.GetTop(rect) + rect.Height)
+                    if (dog.Y > Canvas.GetTop(rect) - dogger.Height && dog.Y < Canvas.GetTop(rect) + rect.Height)
                     {
                         if (angle < 180)
                         {
-                            if ((temp = Canvas.GetLeft(rect) -15) - dx >= 0 && temp - dx < minx)
+                            if ((temp = Canvas.GetLeft(rect) -10) - dog.X >= 0 && temp - dog.X < minx)
                             {
                                 wallV = temp;
                                 vleft = false;
-                                minx = temp - dx;
+                                minx = temp - dog.X;
                                 vset = true;
                             }
                         }
                         else
                         {
-                            if (dx - (temp = (Canvas.GetLeft(rect) + rect.Width) + 5) >= 0 && dx - temp < minx)
+                            if (dog.X - (temp = (Canvas.GetLeft(rect) + rect.Width)) >= 0 && dog.X - temp < minx)
                             {
                                 wallV = temp;
                                 vleft = true;
-                                minx = dx - temp;
+                                minx = dog.X - temp;
                                 vset = true;
                             }
                         }
@@ -672,21 +675,26 @@ namespace DogThing
                 wallV = -10;
         }
 
-        private void debugView() {
-            wH.Visibility = Visibility.Visible;
-            wV.Visibility = Visibility.Visible;
-            wH.Y1 = wallH;
-            wH.Y2 = wallH;
-            wV.X1 = wallV;
-            wV.X2 = wallV;
-            tAngle.Text = wallV.ToString();
-            dAngle.Text = wallH.ToString();
-        }
-
         private void Clickeroni_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            target.X = e.GetPosition(topLeft).X - dogger.Width / 2;
-            target.Y = e.GetPosition(topLeft).Y - dogger.Height / 2;
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                target.X = e.GetPosition(topLeft).X - dogger.Width / 2;
+                target.Y = e.GetPosition(topLeft).Y - dogger.Height / 2;
+            }
+            else
+            {
+                Point adjust = PointFromScreen(fastTrack);
+                adjust.X = adjust.X * xadjust + xoffset;
+                adjust.Y = adjust.Y * yadjust + yoffset;
+                double dist = distance(adjust, e.GetPosition(topLeft));
+                if(dist < 50)
+                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.CornflowerBlue);
+                else if (dist < 90)
+                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.Green);
+                else
+                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red);
+            }
         }
 
         private double distance(Point a, Point b) {
