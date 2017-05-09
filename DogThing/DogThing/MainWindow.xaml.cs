@@ -108,6 +108,8 @@ namespace DogThing
         DateTime uni = new DateTime(1970, 1, 1);
         string currGaze = "none";
         int testoffset = 0;
+        bool finished = false;
+        Point goal = new Point(0, 0);
 
         //Screen scaling
         double xadjust, yadjust;
@@ -219,8 +221,11 @@ namespace DogThing
             //target.X = Canvas.GetLeft(track) - track.Width / 2;
             //target.Y = Canvas.GetTop(track) - track.Height / 2;
 
-            logData();
-            updateTime();
+            if (!finished)
+            {
+                logData();
+                updateTime();
+            }
         }
 
         private void logData() {
@@ -588,6 +593,17 @@ namespace DogThing
         {
             dog.X = Canvas.GetLeft(dogger);
             dog.Y = Canvas.GetTop(dogger);
+            goal.X = Canvas.GetLeft(ElapsedTime);
+            goal.Y = Canvas.GetTop(ElapsedTime);
+
+            if (!finished && (dog.X > goal.X) && (dog.X < (goal.X + ElapsedTime.Width)) && (dog.Y > goal.Y) && (dog.Y < (goal.Y + ElapsedTime.Height)))
+            {
+                finished = true;
+                elapsedTime = Convert.ToInt32(DateTimeOffset.Now.ToUnixTimeSeconds()) - startTime;
+                FinalTime.Text = (Convert.ToInt32(elapsedTime) / 60).ToString("00") + ":" + (Convert.ToInt32(elapsedTime) % 60).ToString("00");
+                puppy.Visibility = Visibility.Visible;
+                FinalTime.Visibility = Visibility.Visible;
+            }
 
             if ((oldx <= wallV && dog.X > wallV && !vleft) || (oldx >= wallV && dog.X < wallV && vleft)) {
                 //Canvas.SetLeft(dogger, wallV);

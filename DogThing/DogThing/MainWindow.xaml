@@ -24,7 +24,9 @@
             <Rectangle Name="Clickeroni" Visibility="Hidden" Panel.ZIndex="100" Width="1672" Height="1050" Fill="Black" Opacity="0" PreviewMouseDown="Clickeroni_PreviewMouseDown"/>
             <Rectangle Name="topLeft" Visibility="Hidden" Width="100" Height="100"></Rectangle>
 
-            <TextBlock Name="ElapsedTime" Canvas.Top="520" Canvas.Left="220" Height="280" Width="180" Foreground="White" Background="LimeGreen" HorizontalAlignment="Right" FontSize="70">00:00</TextBlock>
+            <TextBlock Name="ElapsedTime" Canvas.Top="520" Canvas.Left="220" Height="280" Width="200" Foreground="White" Background="LimeGreen" HorizontalAlignment="Right" FontSize="70">00:00</TextBlock>
+            <Image Name="puppy" Source="/puppy.jpg" Visibility="Hidden" Canvas.Left="0" Canvas.Top="0" Width="1672" Height="1050" Panel.ZIndex="100" Stretch="UniformToFill"/>
+            <TextBlock Name="FinalTime" Visibility="Hidden" Canvas.Top="100" Canvas.Left="100" Panel.ZIndex="150" Foreground="White" FontSize="100">00:00</TextBlock>
             <Rectangle Name="calTest" Canvas.Top="650" Canvas.Left="260" Width="100" Height="100" Fill="LimeGreen"></Rectangle>
             <Rectangle Name="xc1" Fill="DarkGreen" Canvas.Top="0" Canvas.Left="0" Canvas.Right="0" Height="20" Width="1672" Opacity="1"/>
             <Rectangle Name="xc2" Fill="DarkGreen" Canvas.Top="0" Canvas.Right="0" Height="1050" Width="20" Opacity="1"/>
