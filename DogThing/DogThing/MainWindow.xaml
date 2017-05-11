@@ -36,9 +36,9 @@
             <Rectangle Name="xc6" Fill="DarkGreen" Canvas.Top="200" Canvas.Left="1400" Height="620" Width="20" Opacity="1"/>
             <Rectangle Name="xc7" Fill="DarkGreen" Canvas.Top="800" Canvas.Left="200" Height="20" Width="1200" Opacity="1"/>
             <Rectangle Name="xc8" Fill="DarkGreen" Canvas.Top="500" Canvas.Left="200" Height="300" Width="20" Opacity="1"/>
-            <Rectangle Name="xc9" Fill="DarkGreen" Canvas.Top="500" Canvas.Left="200" Height="20" Width="1000" Opacity="1"/>
+            <Rectangle Name="xc9" Fill="DarkGreen" Canvas.Top="500" Canvas.Left="202" Height="20" Width="1000" Opacity="1"/>
 
-            <Rectangle Name="xa1" Fill="DarkGreen" Canvas.Top="20" Canvas.Left="200" Height="120" Width="100" Opacity="1"/>
+            <!--<Rectangle Name="xa1" Fill="DarkGreen" Canvas.Top="20" Canvas.Left="200" Height="120" Width="100" Opacity="1"/>
             <Rectangle Name="xa2" Fill="DarkGreen" Canvas.Top="20" Canvas.Left="900" Height="80" Width="100" Opacity="1"/>
             <Rectangle Name="xb12" Fill="ForestGreen" Canvas.Top="140" Canvas.Left="900" Height="60" Width="100" Opacity="1"/>
             <Rectangle Name="xb3" Fill="ForestGreen" Canvas.Top="80" Canvas.Left="500" Height="120" Width="100" Opacity="1"/>
@@ -52,7 +52,40 @@
             <Rectangle Name="xb13" Fill="ForestGreen" Canvas.Top="940" Canvas.Left="400" Height="50" Width="300" Opacity="1"/>
             <Rectangle Name="xa10" Fill="DarkGreen" Canvas.Top="500" Canvas.Left="1502" Height="220" Width="124" Opacity="1"/>
             <Rectangle Name="xa11" Fill="DarkGreen" Canvas.Top="620" Canvas.Left="600" Height="100" Width="350" Opacity="1"/>
-            <Rectangle Name="xa12" Fill="DarkGreen" Canvas.Top="931" Canvas.Left="850" Height="100" Width="330" Opacity="1"/>
+            <Rectangle Name="xa12" Fill="DarkGreen" Canvas.Top="931" Canvas.Left="850" Height="100" Width="330" Opacity="1"/>-->
+
+            <Rectangle Name="xc10" Fill="Green" Canvas.Top="19" Canvas.Left="288" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa2" Fill="Green" Canvas.Top="911" Canvas.Left="152" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa3" Fill="Green" Canvas.Top="819" Canvas.Left="544" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa4" Fill="Green" Canvas.Top="819" Canvas.Left="728" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa5" Fill="Green" Canvas.Top="911" Canvas.Left="917" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa6" Fill="Green" Canvas.Top="819" Canvas.Left="1083" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa7" Fill="Green" Canvas.Top="911" Canvas.Left="1256" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xc15" Fill="Green" Canvas.Top="19" Canvas.Left="1274" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xc12" Fill="Green" Canvas.Top="19" Canvas.Left="814" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xc11" Fill="Green" Canvas.Top="81" Canvas.Left="507" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xa11" Fill="Green" Canvas.Top="633" Canvas.Left="796" Height="168" Width="20" Opacity="1"/>
+            <Rectangle Name="xa12" Fill="Green" Canvas.Top="518" Canvas.Left="1182" Height="199" Width="20" Opacity="1"/>
+            <Rectangle Name="xb13" Fill="Green" Canvas.Top="315" Canvas.Left="1182" Height="187" Width="20" Opacity="1"/>
+            <Rectangle Name="xb14" Fill="Green" Canvas.Top="219" Canvas.Left="564" Height="186" Width="20" Opacity="1"/>
+            <Rectangle Name="xb15" Fill="Green" Canvas.Top="381" Canvas.Left="200" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xb16" Fill="Green" Canvas.Top="218" Canvas.Left="117" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xb17" Fill="Green" Canvas.Top="251" Canvas.Left="1509" Height="20" Width="144" Opacity="1"/>
+            <Rectangle Name="xa18" Fill="Green" Canvas.Top="800" Canvas.Left="101" Height="20" Width="100" Opacity="1"/>
+            <Rectangle Name="xc13" Fill="Green" Canvas.Top="81" Canvas.Left="972" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xc14" Fill="Green" Canvas.Top="19" Canvas.Left="1149" Height="120" Width="20" Opacity="1"/>
+            <Rectangle Name="xb22" Fill="Green" Canvas.Top="879" Canvas.Left="1512" Height="20" Width="141" Opacity="1"/>
+            <Rectangle Name="xb23" Fill="Green" Canvas.Top="730" Canvas.Left="1419" Height="20" Width="141" Opacity="1"/>
+            <Rectangle Name="xb24" Fill="Green" Canvas.Top="481" Canvas.Left="1509" Height="20" Width="143" Opacity="1"/>
+            <Rectangle Name="xb25" Fill="Green" Canvas.Top="220" Canvas.Left="1033" Height="191" Width="20" Opacity="1"/>
+            <Rectangle Name="xb26" Fill="Green" Canvas.Top="316" Canvas.Left="759" Height="186" Width="20" Opacity="1"/>
+            <Rectangle Name="xb27" Fill="Green" Canvas.Top="219" Canvas.Left="370" Height="186" Width="20" Opacity="1"/>
+            <Rectangle Name="xa28" Fill="Green" Canvas.Top="518" Canvas.Left="507" Height="168" Width="20" Opacity="1"/>
+            <Rectangle Name="xa29" Fill="Green" Canvas.Top="520" Canvas.Left="644" Height="168" Width="20" Opacity="1"/>
+            <Rectangle Name="xa30" Fill="Green" Canvas.Top="632" Canvas.Left="994" Height="168" Width="20" Opacity="1"/>
+
+
+
 
             <!--<Rectangle Name="xb1" Width="900" Opacity="1" Height="70" Fill="Gray" Canvas.Top="124" Canvas.Left="-550"/>
             <Rectangle Name="xa2" Width="70" Opacity="1" Height="731" Fill="Gray" Canvas.Left="455" Canvas.Top="-273"/>
