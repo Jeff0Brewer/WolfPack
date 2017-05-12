@@ -32,7 +32,8 @@ namespace DogThing
     {
         #region Variables
         //SETUP VARIABLES//
-        private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 A, 169.254.50.139 B
+        String pathStart = "C:/Users/Master/Documents/DogLog/data"; //C:/Users/Master/Documents/DogLog/data - Lenovos, C:/Users/ResearchSquad/Documents/DogLog/data
+        private static string defaultSenderIP = "169.254.50.139"; //169.254.41.115 - A, 169.254.50.139 - B
         string compID = "master"; //Set to a, b, or master
         string condition = "fill";
         string testNumber = "0";
@@ -103,7 +104,6 @@ namespace DogThing
 
         //Logging
         StringBuilder csv = new StringBuilder();
-        String pathStart = "C:/Users/ResearchSquad/Documents/DogLog/data";
         String filePath;
         DateTime uni = new DateTime(1970, 1, 1);
         string currGaze = "none";
@@ -724,6 +724,12 @@ namespace DogThing
             return deg * Math.PI / 180;
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            File.WriteAllText(filePath, csv.ToString());
+            eyeXHost.Dispose();
+            base.OnClosing(e);
+        }
         #region Sender/Receiver Methods
         public void tryCommunicateReceiver(String x)
         {
