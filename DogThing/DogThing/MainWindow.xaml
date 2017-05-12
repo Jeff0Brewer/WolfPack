@@ -9,7 +9,7 @@
         Width="1672"
         Title="MainWindow" WindowState="Maximized"  WindowStyle="None">
     <Viewbox Name="vbox">
-        <Canvas Name="canv" Background="Beige" Width="1672" Height="1050" Loaded="canv_Loaded">
+        <Canvas Name="canv" Background="AntiqueWhite" Width="1672" Height="1050" Loaded="canv_Loaded">
             <Ellipse Name="track" Panel.ZIndex="200" Visibility="Hidden" Width="10" Height="10" Fill="Black" Opacity="1" Canvas.Left="0" Canvas.Top="0"></Ellipse>
             <Rectangle Name="dogger" Panel.ZIndex="50" Width="10" Height="20" Fill="Brown" RenderTransformOrigin="0.5,0.5" Canvas.Left="50" Canvas.Top="50">
                 <Rectangle.RenderTransform>
@@ -23,11 +23,16 @@
             </Rectangle>
             <Rectangle Name="Clickeroni" Visibility="Hidden" Panel.ZIndex="100" Width="1672" Height="1050" Fill="Black" Opacity="0" PreviewMouseDown="Clickeroni_PreviewMouseDown"/>
             <Rectangle Name="topLeft" Visibility="Hidden" Width="100" Height="100"></Rectangle>
-
-            <TextBlock Name="ElapsedTime" Canvas.Top="520" Canvas.Left="220" Height="280" Width="200" Foreground="White" Background="LimeGreen" HorizontalAlignment="Right" FontSize="70">00:00</TextBlock>
-            <Image Name="puppy" Source="/puppy.jpg" Visibility="Hidden" Canvas.Left="0" Canvas.Top="0" Width="1672" Height="1050" Panel.ZIndex="100" Stretch="UniformToFill"/>
-            <TextBlock Name="FinalTime" Visibility="Hidden" Canvas.Top="100" Canvas.Left="100" Panel.ZIndex="150" Foreground="White" FontSize="100">00:00</TextBlock>
-            <Rectangle Name="calTest" Canvas.Top="650" Canvas.Left="260" Width="100" Height="100" Fill="LimeGreen"></Rectangle>
+            <TextBlock Name="ElapsedTime" Canvas.Top="520" Canvas.Left="220" Height="280" Width="200" Foreground="FloralWhite" Background="ForestGreen" HorizontalAlignment="Center" FontSize="70">00:00</TextBlock>
+            <Image Name="puppy" Source="/puppy.jpg" Opacity="0.97"  Visibility="Hidden" Canvas.Left="0" Canvas.Top="0" Width="1672" Height="1050" Panel.ZIndex="100" Stretch="UniformToFill"/>
+            <TextBlock Name="FinalTime" Visibility="Hidden" Canvas.Top="60" Canvas.Right="50" Panel.ZIndex="150" Foreground="FloralWhite" FontSize="90">Time: 00:00</TextBlock>
+            <Rectangle Name="calKey1" Canvas.Top="635" Canvas.Left="260" Width="30" Height="15" Fill="Red"></Rectangle>
+            <Rectangle Name="calKey2" Canvas.Top="635" Canvas.Left="290" Width="30" Height="15" Fill="Gold"></Rectangle>
+            <Rectangle Name="calKey3" Canvas.Top="635" Canvas.Left="320" Width="30" Height="15" Fill="LimeGreen"></Rectangle>
+            <Grid Canvas.Top="650" Canvas.Left="260" Width="90" Height="90">
+                <Rectangle Name="calTest" Fill="LimeGreen"></Rectangle>
+                <TextBlock Foreground="FloralWhite" FontSize="16" TextWrapping="WrapWithOverflow">Calibration: 1)Look at cursor 2)Right click</TextBlock>
+            </Grid>
             <Rectangle Name="xc1" Fill="DarkGreen" Canvas.Top="0" Canvas.Left="0" Canvas.Right="0" Height="20" Width="1672" Opacity="1"/>
             <Rectangle Name="xc2" Fill="DarkGreen" Canvas.Top="0" Canvas.Right="0" Height="1050" Width="20" Opacity="1"/>
             <Rectangle Name="xc3" Fill="DarkGreen" Canvas.Top="200" Canvas.Left="0" Height="840" Width="20" Opacity="1"/>

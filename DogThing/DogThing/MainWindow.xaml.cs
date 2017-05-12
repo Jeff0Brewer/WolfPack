@@ -600,11 +600,12 @@ namespace DogThing
             {
                 finished = true;
                 elapsedTime = Convert.ToInt32(DateTimeOffset.Now.ToUnixTimeSeconds()) - startTime;
-                FinalTime.Text = (Convert.ToInt32(elapsedTime) / 60).ToString("00") + ":" + (Convert.ToInt32(elapsedTime) % 60).ToString("00");
+                FinalTime.Text = "Time: " + (Convert.ToInt32(elapsedTime) / 60).ToString("00") + ":" + (Convert.ToInt32(elapsedTime) % 60).ToString("00");
                 puppy.Visibility = Visibility.Visible;
                 FinalTime.Visibility = Visibility.Visible;
             }
 
+            ElapsedTime.Foreground = new SolidColorBrush(Colors.FloralWhite);
             if ((oldx <= wallV && dog.X > wallV && !vleft) || (oldx >= wallV && dog.X < wallV && vleft)) {
                 //Canvas.SetLeft(dogger, wallV);
                 Canvas.SetLeft(dogger, 50);
@@ -612,7 +613,8 @@ namespace DogThing
                 target.X = 50;
                 target.Y = 50;
                 numDeaths++;
-                startTime = startTime - 15;
+                ElapsedTime.Foreground = new SolidColorBrush(Colors.Red);
+                startTime = startTime - 10;
             }
             else if ((oldy <= wallH && dog.Y > wallH && !habove) || (oldy >= wallH && dog.Y < wallH && habove)) {
                 //Canvas.SetTop(dogger, wallH);
@@ -621,7 +623,8 @@ namespace DogThing
                 target.X = 50;
                 target.Y = 50;
                 numDeaths++;
-                startTime = startTime - 15;
+                ElapsedTime.Foreground = new SolidColorBrush(Colors.Red);
+                startTime = startTime - 10;
             }
         }
 
@@ -705,9 +708,9 @@ namespace DogThing
                 adjust.Y = adjust.Y * yadjust + yoffset;
                 double dist = distance(adjust, e.GetPosition(topLeft));
                 if(dist < 50)
-                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.CornflowerBlue);
+                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.LimeGreen);
                 else if (dist < 90)
-                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.Green);
+                    calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.Gold);
                 else
                     calTest.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red);
             }
