@@ -65,6 +65,7 @@ namespace DogThing
         bool habove = true;
         bool vleft = false;
         int numDeaths = 0;
+        bool moving = false;
 
         //Echo Vis
         bool echoOn = false;
@@ -122,9 +123,7 @@ namespace DogThing
         public MainWindow()
         {
             InitializeComponent();
-
             
-
             filePath = pathStart + testNumber + ".csv";
             while (File.Exists(filePath)) {
                 testoffset++;
@@ -302,7 +301,8 @@ namespace DogThing
                 track.Visibility = Visibility.Visible;
             }
             else if (Keyboard.IsKeyDown(Key.Escape)) {
-                File.WriteAllText(filePath,csv.ToString());
+                if(File.Exists(filePath))
+                    File.WriteAllText(filePath,csv.ToString());
                 eyeXHost.Dispose();
                 Application.Current.Shutdown();
             }
@@ -580,13 +580,21 @@ namespace DogThing
                 angle = (angle * .75 + (targetAngle - 360) * .25) % 360;
             if (angle < 0)
                 angle += 360;
-            if (Math.Abs(dog.X - target.X) > 3 || Math.Abs(dog.Y - target.Y) > 3)
+            if ((Math.Abs(dog.X - target.X) > 3 || Math.Abs(dog.Y - target.Y) > 3) && (moving || angleDiff(targetAngle, angle) < 25))
             {
+                moving = true;
                 double rad = degToRad(angle - 90);
                 Canvas.SetLeft(dogger, dog.X += 3 * Math.Cos(rad));
                 Canvas.SetTop(dogger, dog.Y += 3 * Math.Sin(rad));
             }
+            else
+                moving = false;
             dogger.RenderTransform = new RotateTransform(angle);
+        }
+
+        private double angleDiff(double a, double b) {
+                double phi = Math.Abs(b - a) % 360;
+                return phi > 180 ? 360 - phi : phi;
         }
 
         private void collision()
@@ -726,7 +734,8 @@ namespace DogThing
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            File.WriteAllText(filePath, csv.ToString());
+            if(File.Exists(filePath))
+                File.WriteAllText(filePath, csv.ToString());
             eyeXHost.Dispose();
             base.OnClosing(e);
         }
